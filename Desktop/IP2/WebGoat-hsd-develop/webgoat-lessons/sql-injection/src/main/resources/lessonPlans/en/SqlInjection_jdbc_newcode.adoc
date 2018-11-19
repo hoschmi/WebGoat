@@ -1,0 +1,17 @@
+== Try it! Writing safe code
+
+Now it is time to write your own code! Use JDBC to connect to a database and use a statement to request data from the database (the content of the statement does not matter, but make sure that the SQL is valid). The SQL Statement should at least contain one string parameter. The content of the parameter is stored in the variable 'String content'.
+
+All code you write down below gets inserted into a main method of a java class with the name "TestClass". This class also imports java.sql.*. Use your knowledge and write the right code from scratch!
+
+For example, following coding would compile without any error.
+
+[source,java]
+-------------------------------------------------------
+try {
+    Connection conn = null;
+    System.out.println(conn);   //should output 'null'
+} catch (Exception e) {
+    System.out.println("Oops. Something went wrong!");
+}
+-------------------------------------------------------

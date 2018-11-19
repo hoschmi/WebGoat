@@ -1,0 +1,8 @@
+== Concept 
+
+This lesson describes more advanced topics for SQL-Injection.
+
+== Goals
+
+** combining SQL-Injection Techniques.
+** blind SQL-injection.
