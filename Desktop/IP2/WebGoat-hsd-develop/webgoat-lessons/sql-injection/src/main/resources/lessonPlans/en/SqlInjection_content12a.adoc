@@ -1,7 +1,7 @@
 == Order by clause
 
 Question: Does a prepared statement always prevent against an SQL injection?
-Answer: No it does not.
+Answer: No it doesn't.
 
 Let's take a look at the following statement:
 
@@ -38,7 +38,7 @@ select * from users order by (case when (true) then lastname else firstname)
 ----
 
 So we can substitute any kind of boolean operation in the `when(....)` part. The statement will just work because
-it is a valid query whether you use a prepared statement or not an order by clause can by definition contain a
+it's a valid query whether you use a prepared statement or not an order by clause can by definition contain a
 expression.
 
 === Mitigation

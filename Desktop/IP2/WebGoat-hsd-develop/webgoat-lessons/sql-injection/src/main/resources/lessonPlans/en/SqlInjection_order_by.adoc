@@ -1,7 +1,7 @@
-In this assignment you try to perform a SQL-Injection with the ORDER BY field.
+In this assignment you try to perform a SQL injection with the ORDER BY field.
 Try to find the ip address of the `webgoat-prd` server, guessing the complete
 ip address might take too long so we give you the last part: `xxx.130.219.202`
 
-Tip: To complete this assignment a tool such as OWASP ZAP is required.
+Tip: To complete this assignment, a tool such as OWASP ZAP is required.
 
-Note: The submit field of this assignment is *NOT* vulnerable for an SQL-Injection.
+Note: The submit field of this assignment is *NOT* vulnerable for an SQL injection.

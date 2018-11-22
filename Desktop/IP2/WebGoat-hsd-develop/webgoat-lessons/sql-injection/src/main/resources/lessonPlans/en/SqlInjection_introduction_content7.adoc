@@ -1,6 +1,6 @@
-== Severity of SQL-Injection
+== Severity of SQL injection
 
-=== The severity of SQL-Injection attacks is limited by:
+=== The severity of SQL injection attacks is limited by:
 * attacker’s skill and imagination.
 * defense in depth countermeasures.
 ** input validation.
@@ -12,8 +12,8 @@
 * MySQL Connector/J and C
 * Oracle
 
-=== SQL-Injection is more common in PHP, Classic ASP, Cold Fusion and older languages.
-* Languages that do not provide parameterized query support.
+=== SQL injection is more common in PHP, Classic ASP, Cold Fusion and older languages.
+* Languages that don't provide parameterized query support.
 * Parameterized queries have been added to newer versions.
 * Early adopters of web technology (i.e. Old Code).
 

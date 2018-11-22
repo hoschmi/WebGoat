@@ -7,4 +7,4 @@ results in `+"SELECT * FROM users WHERE name = 'Smith' OR TRUE;+` and that way w
 * `+Smith’ OR 1 = 1; --+` +
 results in `+"SELECT * FROM users WHERE name = 'Smith' OR TRUE;--';+` and that way will return all entries from the users table
 * `+Smith’; DROP TABLE USERS; truncate audit_log; --+` +
-chains multiple SQL-Commands and deletes the USERS table as well as entries from the audit_log
+chains multiple SQL commands and deletes the USERS table as well as entries from the audit_log

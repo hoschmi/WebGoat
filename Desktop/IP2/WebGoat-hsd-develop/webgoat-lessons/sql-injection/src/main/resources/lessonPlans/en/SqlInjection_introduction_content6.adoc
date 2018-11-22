@@ -1,6 +1,6 @@
-== Consequences of SQL-Injection
+== Consequences of SQL injection
 
-=== A successful SQL-Injection exploit can:
+=== A successful SQL injection exploit can:
 * read and modify sensitive data from the database.
 * execute administrative operations on the database.
 ** shutdown or auditing the DBMS.
@@ -9,7 +9,7 @@
 * recover the content of a given file present on the DBMS file system.
 * issue commands to the operating system.
 
-=== SQL-Injection attacks allow attackers to:
+=== SQL injection attacks allow attackers to:
 * spoof identity.
 * tamper with existing data.
 * cause repudiation issues such as voiding transactions or changing balances.

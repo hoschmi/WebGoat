@@ -1,8 +1,8 @@
 === Data Manipulation Language (DML)
 
-DML deals with the manipulation of data and includes the most common SQL statements such as SELECT, INSERT, UPDATE, DELETE, etc. It is used for requesting a result set of records from database tables (select), adding (insert), deleting and modifying (update) data in a database.
+DML deals with the manipulation of data and includes the most common SQL statements such as SELECT, INSERT, UPDATE, DELETE, etc. It's used for requesting a result set of records from database tables (select), adding (insert), deleting and modifying (update) data in a database.
 
-If an attacker uses SQL injection of the DML type to manipulate your database, he will violate one of the following protection goals of information security: confidentiality (select) & integrity (update). Only people authorized to read the data can do so.
+If an attacker uses SQL injection of the DML type to manipulate your database, he'll violate one of the following protection goals of information security: confidentiality (select) & integrity (update). Only people authorized to read the data can do so.
 
 
 * DML commands are used for storing, retrieving, modifying, and deleting data.
@@ -19,7 +19,7 @@ If an attacker uses SQL injection of the DML type to manipulate your database, h
 
 === It's your turn!
 Try to change the department of Tobi Barnett to 'Sales'.
-Note that you have been granted full administrator privileges in this assignment and can access all data without authentication.
+Note that you've been granted full administrator privileges in this assignment and can access all data without authentication.
 
 
 
