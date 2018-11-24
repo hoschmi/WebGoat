@@ -19,33 +19,49 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @AssignmentPath("SqlInjection/attack10b")
-@AssignmentHints(value = {"SqlStringInjectionHint-mitigation-10b-1", "SqlStringInjectionHint-mitigation-10b-2", "SqlStringInjectionHint-mitigation-10b-3"})
+@AssignmentHints(value = {"SqlStringInjectionHint-mitigation-10b-1", "SqlStringInjectionHint-mitigation-10b-2", "SqlStringInjectionHint-mitigation-10b-3", "SqlStringInjectionHint-mitigation-10b-4", "SqlStringInjectionHint-mitigation-10b-5"})
 public class SqlInjectionLesson10b extends AssignmentEndpoint {
 
-    // Problem: Form has two submits, first submit is null and already wants to throw an attack result. Seconds attack result cant be thrown
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public AttackResult completed(HttpServletRequest req) {
-        String editor = req.getParameter("editor");
+    public AttackResult completed(@RequestParam String editor) {
         try {
-            if (editor == null) {
-                throw new Exception();
-            }
-            String regex1 = "(?=.*PreparedStatement.*)(?=.*setString.*)(?=.*\\=\\?.*|.*\\=\\s\\?.*)";
+            if (editor.isEmpty()) return trackProgress(failed().feedback("sql-injection.10b.no-code").build());
+
             editor = editor.replaceAll("\\<.*?>", "");
-            boolean hasImportant = this.check_text(regex1, editor.replace("\n", "").replace("\r", ""));
+
+            String regex_setsUpConnection = "(?=.*getConnection.*)";
+            String regex_usesPreparedStatement = "(?=.*PreparedStatement.*)";
+            String regex_usesPlaceholder = "(?=.*\\=\\?.*|.*\\=\\s\\?.*)";
+            String regex_usesSetString = "(?=.*setString.*)";
+            String regex_usesExecute = "(?=.*execute.*)";
+            String regex_usesExecuteUpdate = "(?=.*executeUpdate.*)";
+
+            String codeline = editor.replace("\n", "").replace("\r", "");
+
+            boolean setsUpConnection = this.check_text(regex_setsUpConnection, codeline);
+            boolean usesPreparedStatement = this.check_text(regex_usesPreparedStatement, codeline);
+            boolean usesSetString = this.check_text(regex_usesSetString, codeline);
+            boolean usesPlaceholder = this.check_text(regex_usesPlaceholder, codeline);
+            boolean usesExecute = this.check_text(regex_usesExecute, codeline);
+            boolean usesExecuteUpdate = this.check_text(regex_usesExecuteUpdate, codeline);
+
+            boolean hasImportant = (setsUpConnection && usesPreparedStatement && usesPlaceholder && usesSetString && (usesExecute || usesExecuteUpdate));
             List<Diagnostic> hasCompiled = this.compileFromString(editor);
-            String errors = "";
+
             if (hasImportant && hasCompiled.size() < 1) {
                 return trackProgress(success().feedback("sql-injection.10b.success").build());
-            } else if (hasCompiled.size() > 1) {
+            } else if (hasCompiled.size() > 0) {
+                String errors = "";
                 for (Diagnostic d : hasCompiled) {
-                    errors += d.getMessage(null) + "\n";
+                    errors += d.getMessage(null) + "<br>";
                 }
+                return trackProgress(failed().feedback("sql-injection.10b.compiler-errors").output(errors).build());
+            } else {
+                return trackProgress(failed().feedback("sql-injection.10b.failed").build());
             }
-            return trackProgress(failed().feedback("sql-injection.10b.failed").output(errors).build());
         } catch(Exception e) {
-            return trackProgress(success().build());
+            return trackProgress(failed().output(e.getMessage()).build());
         }
     }
 
@@ -62,7 +78,7 @@ public class SqlInjectionLesson10b extends AssignmentEndpoint {
     }
 
     private SimpleJavaFileObject getJavaFileContentsAsString(String s){
-        StringBuilder javaFileContents = new StringBuilder("import java.sql.*; public class TestClass { public static void main(String[] args) {" + s + "}}");
+        StringBuilder javaFileContents = new StringBuilder("import java.sql.*; public class TestClass { static String DBUSER; static String DBPW; static String DBURL; public static void main(String[] args) {" + s + "}}");
         JavaObjectFromString javaFileObject = null;
         try{
             javaFileObject = new JavaObjectFromString("TestClass.java", javaFileContents.toString());
