@@ -1,0 +1,22 @@
+== Severity of SQL injection
+
+=== The severity of SQL injection attacks is limited by:
+* attacker’s skill and imagination.
+* defense in depth countermeasures.
+** input validation.
+** least privilege.
+* database technology.
+
+=== Not all databases support command chaining:
+* Microsoft Access
+* MySQL Connector/J and C
+* Oracle
+
+=== SQL injection is more common in PHP, Classic ASP, Cold Fusion and older languages.
+* Languages that don't provide parameterized query support.
+* Parameterized queries have been added to newer versions.
+* Early adopters of web technology (i.e. Old Code).
+
+=== Not all databases are equal (SQL Server):
+* command shell: `master.dbo.xp_cmdshell 'cmd.exe dir c:'`.
+* reqistry commands: `xp_regread`, `xp_regdeletekey`, …
