@@ -16,7 +16,7 @@ link https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
 
 === Javascript Framework Specifics
 
-Encoding in the client can be tricky. Here are somre resources to help with that. If you don't see your framework below (e.g. Ember, React, ???) and would like to contribute or suggest something ...
+Encoding in the client can be tricky. Here are some resources to help with that. If you do not see your framework below (e.g. Ember, React, ???) and would like to contribute or suggest something ...
 stop by https://github.com/WebGoat/WebGoat and file an issue (preferably with some recommendations/links) or fork and submit a PR.
 
 ==== jQuery
@@ -24,7 +24,7 @@ be aware if you are using something like ...
 
 _$selector.html(userInputHere)_,
 
-...you are in danger. If you want to use that, ensure you are doing someting more like:
+...you are in danger. If you want to use that, ensure you are doing something more like:
 
 _$selector.html(someEncodeHtmlMethod(userInputHere))_
 

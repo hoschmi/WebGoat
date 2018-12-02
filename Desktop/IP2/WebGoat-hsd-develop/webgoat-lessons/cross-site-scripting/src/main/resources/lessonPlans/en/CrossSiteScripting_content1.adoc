@@ -2,12 +2,12 @@
 
 Cross-site script (also commonly known as XSS) is a vulnerability/flaw that combines ...
 # the allowance of html/script tags as input that are ...
-# rendred into a browser without encoding or sanitization
+# rendered into a browser without encoding or sanitation
 
 === Cross site scripting (XSS) is the most prevalent and pernicious web application security issue
 
 While there is a simple well-known defense for this attack, there are still many instances of it on the web.  In terms of fixing it,
-coverage of fixes also tends to be a problem. We'll talk more about the defense in a little bit.
+coverage of fixes also tends to be a problem. We will talk more about the defense in a little bit.
 
 === XSS has a significant impact
 
@@ -31,4 +31,4 @@ javascript:alert(document.cookie);
 == Try It!  Using Chrome or Firefox 
 
 * Open a second tab and use the same url as this page you are currently on (or any url within this instance of WebGoat)
-* Then, in the address bar on each tab, type `javascript:alert(document.cookie);` *NOTE:* If you /cut/paste you'll need to add the `javascript:` back in.
+* Then, in the address bar on each tab, type `javascript:alert(document.cookie);` *NOTE:* If you /cut/paste you will need to add the `javascript:` back in.
