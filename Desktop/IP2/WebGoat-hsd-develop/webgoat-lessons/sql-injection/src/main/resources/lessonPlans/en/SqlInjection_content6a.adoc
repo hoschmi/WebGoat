@@ -1,6 +1,6 @@
 == Try It! Pulling data from other tables
 
-Let's try to exploit the fact that you can use an union to get the contents of another table.
+Let us try to exploit the fact that you can use an union to get the contents of another table.
 
 One of the tables in the WebGoat database is:
 

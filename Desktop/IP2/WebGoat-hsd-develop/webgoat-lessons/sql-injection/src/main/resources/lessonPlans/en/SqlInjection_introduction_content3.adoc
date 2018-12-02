@@ -2,7 +2,7 @@
 
 DDL includes commands for defining data structures, especially database schemes that define how data is stored in the database.
 
-If an attacker uses SQL injection of the DDL type to manipulate your database, he'll violate one of the following protection goals of information security: integrity (alter) & availability (drop). Only people authorized to change/delete the data can do so.
+If an attacker uses SQL injection of the DDL type to manipulate your database, he will violate one of the following protection goals of information security: integrity (alter) & availability (drop). Only people authorized to change/delete the data can do so.
 
 
 * DDL commands are used for creating, modifying, and dropping the structure of database objects.

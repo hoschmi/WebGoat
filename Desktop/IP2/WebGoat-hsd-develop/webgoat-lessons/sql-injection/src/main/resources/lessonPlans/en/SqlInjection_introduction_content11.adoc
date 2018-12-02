@@ -6,4 +6,4 @@ The query in the code builds a dynamic query as seen in the previous example.  T
 "select * from users where LOGIN_COUNT > 0 and FIRST_NAME = ‘" + userName + "'";
 ------------------------------------------------------------
 
-Try to retrieve all the users from the users table using the form below. You shouldn't need to know any specific user name to get the complete list.
+Try to retrieve all the users from the users table using the form below. You should not need to know any specific user name to get the complete list.

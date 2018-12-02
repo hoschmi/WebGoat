@@ -1,7 +1,7 @@
 == Severity of SQL injection
 
 === The severity of SQL injection attacks is limited by:
-* attacker’s skill and imagination.
+* attackers skill and imagination.
 * defense in depth countermeasures.
 ** input validation.
 ** least privilege.

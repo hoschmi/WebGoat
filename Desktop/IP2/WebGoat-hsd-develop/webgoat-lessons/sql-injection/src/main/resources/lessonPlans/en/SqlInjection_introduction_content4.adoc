@@ -2,7 +2,7 @@
 
 DCL is used to create privileges to allow users accessing and manipulating the database.
 
-If an attacker uses SQL injection of the DCL type to manipulate your database, he'll violate one of the following protection goals of information security: confidentiality (grant) & availability (revoke). Attackers could grand themselves admin privileges or revoke admin rights from an administrator.
+If an attacker uses SQL injection of the DCL type to manipulate your database, he will violate one of the following protection goals of information security: confidentiality (grant) & availability (revoke). Attackers could grand themselves admin privileges or revoke admin rights from an administrator.
 
 
 * DCL commands are used for providing security to database objects.
