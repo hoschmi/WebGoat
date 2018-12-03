@@ -1,5 +1,6 @@
 package org.owasp.webgoat.plugin.introduction;
 
+import org.hsqldb.lib.MultiValueHashMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -23,58 +26,74 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SqlInjectionLesson5aTest extends LessonTest {
 
-    @Autowired
-    private WebgoatContext context;
+  @Autowired
+  private WebgoatContext context;
 
-    @Before
-    public void setup() throws Exception {
-        SqlInjection sql = new SqlInjection();
-        when(webSession.getCurrentLesson()).thenReturn(sql);
-        when(webSession.getWebgoatContext()).thenReturn(context);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
+  @Before
+  public void setup() throws Exception {
+    SqlInjection sql = new SqlInjection();
+    when(webSession.getCurrentLesson()).thenReturn(sql);
+    when(webSession.getWebgoatContext()).thenReturn(context);
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+  }
 
-    @Test
-    public void knownAccountShouldDisplayData() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack5a")
-                .param("account", "Smith"))
+  @Test
+  public void knownAccountShouldDisplayData() throws Exception {
+    LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+    map.add("account", "Smith");
+    map.add("operator", "");
+    map.add("injection", "");
+    mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack5a")
+            .params(map))
 
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("lessonCompleted", is(false)))
-                .andExpect(jsonPath("$.feedback", is(messages.getMessage("assignment.not.solved"))))
-                .andExpect(jsonPath("$.output", containsString("<p>USERID, FIRST_NAME")));
-    }
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("lessonCompleted", is(false)))
+            .andExpect(jsonPath("$.feedback", is(messages.getMessage("assignment.not.solved"))))
+            .andExpect(jsonPath("$.output", containsString("<p>USERID, FIRST_NAME")));
+  }
 
-    @Test
-    public void unknownAccount() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack5a")
-                .param("account", "Smithh"))
+  @Test
+  public void unknownAccount() throws Exception {
+    LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+    map.add("account", "Smithh");
+    map.add("operator", "");
+    map.add("injection", "");
+    mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack5a")
+            .params(map))
 
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("lessonCompleted", is(false)))
-                .andExpect(jsonPath("$.feedback", is(messages.getMessage("NoResultsMatched"))))
-                .andExpect(jsonPath("$.output").doesNotExist());
-    }
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("lessonCompleted", is(false)))
+            .andExpect(jsonPath("$.feedback", is(messages.getMessage("NoResultsMatched"))))
+            .andExpect(jsonPath("$.output").doesNotExist());
+  }
 
-    @Test
-    public void sqlInjection() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack5a")
-                .param("account", "smith' OR '1' = '1"))
+  @Test
+  public void sqlInjection() throws Exception {
+    LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+    map.add("account", "Smith'");
+    map.add("operator", "OR");
+    map.add("injection", "'1' = '1");
+    mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack5a")
+            .params(map))
 
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("lessonCompleted", is(true)))
-                .andExpect(jsonPath("$.feedback", containsString("You have succeed")))
-                .andExpect(jsonPath("$.output").doesNotExist());
-    }
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("lessonCompleted", is(true)))
+            .andExpect(jsonPath("$.feedback", containsString("You have succeed")))
+            .andExpect(jsonPath("$.output").doesNotExist());
+  }
 
-    @Test
-    public void sqlInjectionWrongShouldDisplayError() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack5a")
-                .param("account", "smith' OR '1' = '1'"))
+  @Test
+  public void sqlInjectionWrongShouldDisplayError() throws Exception {
+    LinkedMultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+    map.add("account", "Smith'");
+    map.add("operator", "OR");
+    map.add("injection", "'1' = '1'");
+    mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack5a")
+            .params(map))
 
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("lessonCompleted", is(false)))
-                .andExpect(jsonPath("$.feedback", containsString(messages.getMessage("assignment.not.solved"))))
-                .andExpect(jsonPath("$.output", is("malformed string: '1''")));
-    }
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("lessonCompleted", is(false)))
+            .andExpect(jsonPath("$.feedback", containsString(messages.getMessage("assignment.not.solved"))))
+            .andExpect(jsonPath("$.output", is("malformed string: '1''")));
+  }
 }

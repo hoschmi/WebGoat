@@ -20,6 +20,8 @@
         <module>cross-site-scripting</module>
         <module>html-tampering</module>
         <module>http-basics</module>
+        <module>cia</module>
+        <module>chrome-dev-tools</module>
         <module>http-proxies</module>
         <module>insecure-login</module>
         <module>insecure-deserialization</module>
@@ -34,6 +36,7 @@
         <module>missing-function-ac</module>
         <module>csrf</module>
         <module>password-reset</module>
+        <module>secure-passwords</module>
         <!-- uncomment below to include lesson template in build, also uncomment the dependency in webgoat-server/pom.xml to have it run in the project fully -->
         <!--<module>webgoat-lesson-template</module>-->
     </modules>

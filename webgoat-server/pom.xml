@@ -132,6 +132,16 @@
         </dependency>
         <dependency>
             <groupId>org.owasp.webgoat.lesson</groupId>
+            <artifactId>cia</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.owasp.webgoat.lesson</groupId>
+            <artifactId>chrome-dev-tools</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.owasp.webgoat.lesson</groupId>
             <artifactId>idor</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -193,6 +203,11 @@
         <dependency>
             <groupId>org.owasp.webgoat.lesson</groupId>
             <artifactId>password-reset</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.owasp.webgoat.lesson</groupId>
+            <artifactId>secure-passwords</artifactId>
             <version>${project.version}</version>
         </dependency>
 
