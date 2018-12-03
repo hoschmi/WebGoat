@@ -28,12 +28,12 @@ public class CrossSiteScriptingLesson4 extends AssignmentEndpoint {
         editor = editor.replaceAll("\\<.*?>","");
         System.out.println(editor);
 
-        if (editor.contains("Policy.getInstance(\"antisamy-slashdot.xml\"")&&
+        if ((editor.contains("Policy.getInstance(\"antisamy-slashdot.xml\"") || editor.contains(".scan(newComment, \"antisamy-slashdot.xml\"") || editor.contains(".scan(newComment, new File(\"antisamy-slashdot.xml\")")) &&
             editor.contains("new AntiSamy();")&&
             editor.contains(".scan(newComment,") &&
             editor.contains("CleanResults") &&
             editor.contains("MyCommentDAO.addComment(threadID, userID")&&
-            editor.contains(".getCleanHTML()"))
+            editor.contains(".getCleanHTML());"))
         {
             System.out.println("true");
             return trackProgress(success().feedback("xss-mitigation-4-success").build());
