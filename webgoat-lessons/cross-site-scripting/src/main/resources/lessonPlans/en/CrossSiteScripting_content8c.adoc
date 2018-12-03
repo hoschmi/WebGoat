@@ -1,65 +1,49 @@
-== Reflective XSS
+== Stored XSS
+One way to prevent stored XSS is the usage of https://www.owasp.org/index.php/Category:OWASP_AntiSamy_Project[OWASP AntiSamy]. AntiSamy is able to produce a "clean" string based on a modifiable policy file.
 
-See the HTML file below which passes data to a JSP file.
+See the java class below which saves a comment into a database.
 
-[source,html]
+[source,java]
 -------------------------------------------------------
-<html>
-   <body>
+public class MyCommentDAO {
 
-      <form action = "main.jsp" method = "POST">
-         First Name: <input type = "text" name = "first_name">
-         <br />
-         Last Name: <input type = "text" name = "last_name" />
-         <input type = "submit" value = "Submit" />
-      </form>
+    public static void addComment(int threadID, int userID, String newComment) {
 
-   </body>
-</html>
--------------------------------------------------------
+                String sql = "INSERT INTO COMMENTS(THREADID, USERID, COMMENT) VALUES(?,?,?);";
 
-Here is the JSP file:
+                try {
+                        PreparedStatement stmt = connection.prepareStatement(sql);
 
-[source,html]
--------------------------------------------------------
-<html>
-   <head>
-      <title>Using GET and POST Method to Read Form Data</title>
-   </head>
+                        stmt.setInt(1, threadID);
+                        stmt.setInt(2, userID);
+                        stmt.setString(3, newComment);
 
-   <body>
-      <center>
-      <h1>Using POST Method to Read Form Data</h1>
-
-      <ul>
-         <li><p><b>First Name:</b>
-            <%= request.getParameter("first_name")%>
-         </p></li>
-         <li><p><b>Last  Name:</b>
-            <%= request.getParameter("last_name")%>
-         </p></li>
-      </ul>
-
-   </body>
-</html>
+                        stmt.executeUpdate();
+                } catch (SQLException e) {
+                        e.printStackTrace();
+                }
+        }
+}
 -------------------------------------------------------
 
 
-As you can see the JSP file prints unfiltered user input which is never a good idea.
-You want people to accesses the page like this:
+And here is a java class that is using the addComment function
 
-----
-http://hostname.com/mywebapp/main.jsp?first_name=John&last_name=Smith
-----
+[source,java]
+-------------------------------------------------------
+import org.owasp.validator.html.*;
+import MyCommentDAO;
 
-But what happens if someone uses this link:
-----
-http://hostname.com/mywebapp/main.jsp?first_name=<script>alert("XSS Test")</script>
-----
+public class AntiSamyController {
+    ...
+    public void saveNewComment(int threadID, int userID, String newComment){
+        MyCommentDAO.addComment(threadID, userID, newComment);
+    }
+    ...
+}
+-------------------------------------------------------
+As you can see the Java file stores unfiltered user input into the database.
+You’ll have the whole malicious code stored in your database now.
 
-=== It's your turn!
-
-Try to prevent this kind of XSS by escaping the url parameters in the JSP file:
-
-
-
+== It’s your turn!
+Try to prevent this kind of XSS by creating a clean string inside of the saveNewComment() function. Use the "antisamy-slashdot.xml" as policy file for this example:

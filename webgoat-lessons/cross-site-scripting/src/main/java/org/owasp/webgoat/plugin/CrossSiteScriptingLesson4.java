@@ -1,4 +1,4 @@
-package org.owasp.webgoat.plugin.mitigation;
+package org.owasp.webgoat.plugin;
 
 import org.owasp.webgoat.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.assignments.AssignmentHints;
@@ -17,35 +17,30 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@AssignmentPath("CrossSiteScripting/attack3")
-@AssignmentHints(value = {"mitigation-3-hint1", "mitigation-3-hint2", "mitigation-3-hint3", "mitigation-3-hint4"})
-public class CrossSiteScriptingLesson3 extends AssignmentEndpoint {
+@AssignmentPath("CrossSiteScripting/attack4")
+@AssignmentHints(value = {"xss-mitigation-4-hint1", "xss-mitigation-4-hint2", "xss-mitigation-4-hint3", "xss-mitigation-4-hint4"})
+public class CrossSiteScriptingLesson4 extends AssignmentEndpoint {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public AttackResult completed(@RequestParam String editor) {
 
         editor = editor.replaceAll("\\<.*?>","");
-        //http://www.java67.com/2012/10/how-to-escape-html-special-characters-JSP-Java-Example.html
-        //
-        //<c:out value="${first_name/last_name}" escapeXml="true"/>
-        //or
-        //${fn:escapeXml("param.first_name/last_name")}
-
-        //check html string for regex
-            //check for c:out && escapeXml="true" && !request.getParameter
         System.out.println(editor);
-        if (editor.contains("c:out") && editor.contains("escapeXml=\"true\"") && editor.contains("value=\"${last_name}\"") && editor.contains("value=\"${first_name}\"")) {
+
+        if (editor.contains("Policy.getInstance(\"antisamy-slashdot.xml\"")&&
+            editor.contains("new AntiSamy();")&&
+            editor.contains(".scan(newComment,") &&
+            editor.contains("CleanResults") &&
+            editor.contains("MyCommentDAO.addComment(threadID, userID")&&
+            editor.contains(".getCleanHTML()"))
+        {
             System.out.println("true");
-            return trackProgress(success().build());
-        }
-        else if (editor.contains("${fn:escapeXml") && editor.contains("\"param.first_name\"") && editor.contains("\"param.last_name\"")) {
-            System.out.println("true");
-            return trackProgress(success().build());
+            return trackProgress(success().feedback("xss-mitigation-4-success").build());
         }
         else {
             System.out.println("false");
-            return trackProgress(failed().build());
+            return trackProgress(failed().feedback("xss-mitigation-4-failed").build());
         }
     }
 }
