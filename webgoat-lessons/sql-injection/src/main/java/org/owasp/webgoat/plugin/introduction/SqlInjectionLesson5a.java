@@ -1,3 +1,4 @@
+
 package org.owasp.webgoat.plugin.introduction;
 
 import org.owasp.webgoat.assignments.AssignmentEndpoint;
@@ -45,82 +46,83 @@ import java.sql.*;
  * @created October 28, 2003
  */
 @AssignmentPath("/SqlInjection/attack5a")
+@AssignmentHints(value = {"SqlStringInjectionHint1", "SqlStringInjectionHint2", "SqlStringInjectionHint3", "SqlStringInjectionHint4"})
 public class SqlInjectionLesson5a extends AssignmentEndpoint {
 
-  @RequestMapping(method = RequestMethod.POST)
-  public
-  @ResponseBody
-  AttackResult completed(@RequestParam String account, @RequestParam String operator, @RequestParam String injection) {
-    return injectableQuery(account + " " + operator + " " + injection);
-  }
+    @RequestMapping(method = RequestMethod.POST)
+    public
+    @ResponseBody
+    AttackResult completed(@RequestParam String account) {
+        return injectableQuery(account);
+    }
 
-  protected AttackResult injectableQuery(String accountName) {
-    try {
-      Connection connection = DatabaseUtilities.getConnection(getWebSession());
-      System.out.println(accountName);
-      String query = "SELECT * FROM user_data WHERE first_name = 'John' and last_name = '" + accountName + "'";
-      try {
-        Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_READ_ONLY);
-        ResultSet results = statement.executeQuery(query);
+    protected AttackResult injectableQuery(String accountName) {
+        try {
+            Connection connection = DatabaseUtilities.getConnection(getWebSession());
+            String query = "SELECT * FROM user_data WHERE last_name = '" + accountName + "'";
 
-        if ((results != null) && (results.first())) {
-          ResultSetMetaData resultsMetaData = results.getMetaData();
-          StringBuffer output = new StringBuffer();
+            try {
+                Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                        ResultSet.CONCUR_READ_ONLY);
+                ResultSet results = statement.executeQuery(query);
 
-          output.append(writeTable(results, resultsMetaData));
-          results.last();
+                if ((results != null) && (results.first())) {
+                    ResultSetMetaData resultsMetaData = results.getMetaData();
+                    StringBuffer output = new StringBuffer();
 
-          // If they get back more than one user they succeeded
-          if (results.getRow() >= 6) {
-            return trackProgress(success().feedback("sql-injection.5a.success").feedbackArgs(output.toString()).build());
-          } else {
-            return trackProgress(failed().output(output.toString()).build());
-          }
+                    output.append(writeTable(results, resultsMetaData));
+                    results.last();
+
+                    // If they get back more than one user they succeeded
+                    if (results.getRow() >= 6) {
+                        return trackProgress(success().feedback("sql-injection.5a.success").feedbackArgs(output.toString()).build());
+                    } else {
+                        return trackProgress(failed().output(output.toString()).build());
+                    }
+                } else {
+                    return trackProgress(failed().feedback("sql-injection.5a.no.results").build());
+
+                }
+            } catch (SQLException sqle) {
+
+                return trackProgress(failed().output(sqle.getMessage()).build());
+            }
+        } catch (Exception e) {
+            return trackProgress(failed().output(this.getClass().getName() + " : " + e.getMessage()).build());
+        }
+    }
+
+    public static String writeTable(ResultSet results, ResultSetMetaData resultsMetaData) throws IOException,
+            SQLException {
+        int numColumns = resultsMetaData.getColumnCount();
+        results.beforeFirst();
+        StringBuffer t = new StringBuffer();
+        t.append("<p>");
+
+        if (results.next()) {
+            for (int i = 1; i < (numColumns + 1); i++) {
+                t.append(resultsMetaData.getColumnName(i));
+                t.append(", ");
+            }
+
+            t.append("<br />");
+            results.beforeFirst();
+
+            while (results.next()) {
+
+                for (int i = 1; i < (numColumns + 1); i++) {
+                    t.append(results.getString(i));
+                    t.append(", ");
+                }
+
+                t.append("<br />");
+            }
+
         } else {
-          return trackProgress(failed().feedback("sql-injection.5a.no.results").build());
-
-        }
-      } catch (SQLException sqle) {
-
-        return trackProgress(failed().output(sqle.getMessage()).build());
-      }
-    } catch (Exception e) {
-      return trackProgress(failed().output(this.getClass().getName() + " : " + e.getMessage()).build());
-    }
-  }
-
-  public static String writeTable(ResultSet results, ResultSetMetaData resultsMetaData) throws IOException,
-          SQLException {
-    int numColumns = resultsMetaData.getColumnCount();
-    results.beforeFirst();
-    StringBuffer t = new StringBuffer();
-    t.append("<p>");
-
-    if (results.next()) {
-      for (int i = 1; i < (numColumns + 1); i++) {
-        t.append(resultsMetaData.getColumnName(i));
-        t.append(", ");
-      }
-
-      t.append("<br />");
-      results.beforeFirst();
-
-      while (results.next()) {
-
-        for (int i = 1; i < (numColumns + 1); i++) {
-          t.append(results.getString(i));
-          t.append(", ");
+            t.append("Query Successful; however no data was returned from this query.");
         }
 
-        t.append("<br />");
-      }
-
-    } else {
-      t.append("Query Successful; however no data was returned from this query.");
+        t.append("</p>");
+        return (t.toString());
     }
-
-    t.append("</p>");
-    return (t.toString());
-  }
 }

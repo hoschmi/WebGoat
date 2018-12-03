@@ -45,7 +45,6 @@ public class LessonMenuItem {
     private List<LessonMenuItem> children = new ArrayList<LessonMenuItem>();
     private boolean complete;
     private String link;
-    private int ranking;
 //    private boolean showSource = true;
 //    private boolean showHints = true;
 
@@ -157,13 +156,6 @@ public class LessonMenuItem {
         this.link = link;
     }
 
-    public void setRanking(int ranking) {
-        this.ranking = ranking;
-    }
-
-    public int getRanking() {
-        return this.ranking;
-    }
 
 
 }

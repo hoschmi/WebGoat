@@ -1,5 +1,6 @@
-
 package org.owasp.webgoat.plugin;
+
+
 
 import org.owasp.webgoat.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.assignments.AssignmentPath;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
@@ -44,21 +46,29 @@ import java.io.IOException;
  * @author Bruce Mayhew <a href="http://code.google.com/p/webgoat">WebGoat</a>
  * @created October 28, 2003
  */
-@AssignmentPath("/CrossSiteScripting/attack6a")
-public class CrossSiteScriptingLesson6a extends AssignmentEndpoint {
+@AssignmentPath("/CrossSiteScripting/attack5b")
+public class CrossSiteScriptingLesson5b extends AssignmentEndpoint {
+
     @Autowired
     UserSessionData userSessionData;
 
     @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody
-    AttackResult completed(@RequestParam String DOMTestRoute)  throws IOException {
+    AttackResult completed(@RequestParam String isReflectedXSS)  throws IOException {
+    // init
+    System.out.println(userSessionData.getValue("xss-reflected5a-complete"));
 
-        if (DOMTestRoute.equals("start.mvc#test/")) {
+    //TODO
+//    if (null == userSessionData.getValue("xss-reflected5a-complete") || userSessionData.getValue("xss-reflected-5a-complete").equals("false")) {
+//        //userSessionData.setValue("xss-reflected1-complete",(Object)"false");
+//        return trackProgress(success().feedback("xss-reflected-5b-do5a-first").build());
+//    }
+
+    if (isReflectedXSS.toLowerCase().equals("no") || isReflectedXSS.toLowerCase().equals("n")) {
             //return trackProgress()
-            return trackProgress(success().feedback("xss-reflected-6a-success").build());
+            return trackProgress(success().feedback("xss-reflected-5b-success").build());
         } else {
-            return trackProgress(failed().feedback("xss-reflected-6a-failure").build());
+            return trackProgress(success().feedback("xss-reflected-5b-failure").build());
         }
     }
-
 }
