@@ -205,6 +205,11 @@
             <artifactId>password-reset</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.owasp.webgoat.lesson</groupId>
+            <artifactId>secure-passwords</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!--uncommment below to run/include lesson template in WebGoat Build-->
         <!--<dependency>-->
