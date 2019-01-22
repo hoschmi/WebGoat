@@ -9,7 +9,8 @@ If queries are build dynamically in the application by concatenating strings to 
 If the input takes a string, then you can easily manipulate the build query by using quotation marks to form the string to your specific needs. You could per example end the string parameter with it and input your own SQL after.
 
 === It's your turn!
-You are an employee named 'John Smith' working for a big company. The company has an internal system that allows all employees to see their own internal data like the department they work in and their salary.
+You are an employee named John *Smith* working for a big company.
+The company has an internal system that allows all employees to see their own internal data, like the department they work in and their salary.
 
 The system requires the employees to use a unique authentication TAN to view their data. +
 Your current TAN is '3SL99A'.
