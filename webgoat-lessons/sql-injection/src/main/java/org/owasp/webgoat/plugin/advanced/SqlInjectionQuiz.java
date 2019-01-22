@@ -25,31 +25,37 @@ import java.sql.Statement;
 public class SqlInjectionQuiz extends AssignmentEndpoint {
 
     String[] solutions = {"Solution 4", "Solution 3", "Solution 2", "Solution 3", "Solution 4"};
+    boolean[] guesses = new boolean[solutions.length];
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public AttackResult completed(@RequestParam String[] question_0_solution, @RequestParam String[] question_1_solution, @RequestParam String[] question_2_solution, @RequestParam String[] question_3_solution, @RequestParam String[] question_4_solution) throws IOException {
-        boolean correct = false;
-        String[][] solutionsInput = {question_0_solution, question_1_solution, question_2_solution, question_3_solution, question_4_solution};
-        int counter = 0;
-        for(String[] sa : solutionsInput) {
-            for(String s : sa) {
-                if(sa.length == 1 && s.contains(this.solutions[counter])) {
-                    correct = true;
-                    break;
-                } else {
-                    correct = false;
-                    continue;
-                }
+        int correctAnswers = 0;
+
+        String[] givenAnswers = {question_0_solution[0], question_1_solution[0], question_2_solution[0], question_3_solution[0], question_4_solution[0]};
+
+        for(int i = 0; i < solutions.length; i++) {
+            if (givenAnswers[i].contains(solutions[i])) {
+                // answer correct
+                correctAnswers++;
+                guesses[i] = true;
+            } else {
+                // answer incorrect
+                guesses[i] = false;
             }
-            if(!correct) break;
-            counter++;
         }
-        if(correct) {
+
+        if(correctAnswers == solutions.length) {
             return trackProgress(success().build());
         } else {
             return trackProgress(failed().build());
         }
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public boolean[] getResults() {
+        return this.guesses;
     }
 
 }
