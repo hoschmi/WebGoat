@@ -21,27 +21,27 @@ Here is the JSP file:
 [source,html]
 -------------------------------------------------------
 <html>
-   <head>
-      <title>Using GET and POST Method to Read Form Data</title>
-   </head>
-   <body>
-      <center>
-      <h1>Using POST Method to Read Form Data</h1>
-      <ul>
-         <li>
-            <p>
-                <b>First Name:</b>
-                <%= request.getParameter("first_name")%>
-            </p>
-         </li>
-         <li>
-            <p>
-                <b>Last  Name:</b>
-                <%= request.getParameter("last_name")%>
-            </p>
-         </li>
-      </ul>
-   </body>
+<head>
+    <title>Using GET and POST Method to Read Form Data</title>
+</head>
+
+<body>
+    <h1>Using POST Method to Read Form Data</h1>
+    <table>
+        <tbody>
+            <tr>
+                <td><b>First Name:</b></td>
+                <td><%= request.getParameter("first_name")%></td>
+            </tr>
+            <tr>
+                <td><b>Last Name:</b></td>
+                <td>
+                    <%= request.getParameter("last_name")%>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
 </html>
 -------------------------------------------------------
 
@@ -58,7 +58,7 @@ But what happens if someone uses this link:
 http://hostname.com/mywebapp/main.jsp?first_name=<script>alert("XSS Test")</script>
 ----
 
-=== It's your turn!
+=== It is your turn!
 
 Try to prevent this kind of XSS by escaping the url parameters in the JSP file:
 

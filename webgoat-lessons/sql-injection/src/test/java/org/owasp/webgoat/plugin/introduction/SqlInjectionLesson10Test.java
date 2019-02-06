@@ -42,34 +42,30 @@ public class SqlInjectionLesson10Test extends LessonTest {
     public void tableExistsIsFailure() throws Exception {
         try {
             mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack10")
-                    .param("action", ""))
+                    .param("action_string", ""))
 
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("lessonCompleted", is(false)))
-                    .andExpect(jsonPath("$.feedback", is(this.modifySpan(messages.getMessage("sql-injection.10.entries")))));
+                    .andExpect(jsonPath("$.feedback", is(SqlInjectionLesson8Test.modifySpan(messages.getMessage("sql-injection.10.entries")))));
         } catch (AssertionError e) {
             if (!e.getMessage().contains(completedError)) throw e;
 
             mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack10")
-                    .param("action", ""))
+                    .param("action_string", ""))
 
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("lessonCompleted", is(true)))
-                    .andExpect(jsonPath("$.feedback", is(this.modifySpan(messages.getMessage("sql-injection.10.success")))));
+                    .andExpect(jsonPath("$.feedback", is(SqlInjectionLesson8Test.modifySpan(messages.getMessage("sql-injection.10.success")))));
         }
     }
 
     @Test
     public void tableMissingIsSuccess() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack10")
-                .param("action", "%'; DROP TABLE access_log;--"))
+                .param("action_string", "%'; DROP TABLE access_log;--"))
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("lessonCompleted", is(true)))
-                .andExpect(jsonPath("$.feedback", is(this.modifySpan(messages.getMessage("sql-injection.10.success")))));
-    }
-
-    private String modifySpan(String message) {
-        return message.replace("</span>", "<\\/span>");
+                .andExpect(jsonPath("$.feedback", is(SqlInjectionLesson8Test.modifySpan(messages.getMessage("sql-injection.10.success")))));
     }
 }

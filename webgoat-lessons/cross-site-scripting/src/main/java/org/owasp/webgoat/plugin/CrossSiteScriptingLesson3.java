@@ -1,5 +1,8 @@
-package org.owasp.webgoat.plugin.mitigation;
+package org.owasp.webgoat.plugin;
 
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.owasp.webgoat.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.assignments.AssignmentHints;
 import org.owasp.webgoat.assignments.AssignmentPath;
@@ -9,14 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.tools.*;
-import java.io.IOException;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @AssignmentPath("CrossSiteScripting/attack3")
 @AssignmentHints(value = {"xss-mitigation-3-hint1", "xss-mitigation-3-hint2", "xss-mitigation-3-hint3", "xss-mitigation-3-hint4"})
 public class CrossSiteScriptingLesson3 extends AssignmentEndpoint {
@@ -25,27 +20,38 @@ public class CrossSiteScriptingLesson3 extends AssignmentEndpoint {
     @ResponseBody
     public AttackResult completed(@RequestParam String editor) {
 
-        editor = editor.replaceAll("\\<.*?>","");
-        //http://www.java67.com/2012/10/how-to-escape-html-special-characters-JSP-Java-Example.html
-        //
-        //<c:out value="${first_name/last_name}" escapeXml="true"/>
-        //or
-        //${fn:escapeXml("param.first_name/last_name")}
+        String unescapedString = org.jsoup.parser.Parser.unescapeEntities(editor, true);
+        try {
+            if (editor.isEmpty()) return trackProgress(failed().feedback("xss-mitigation-3-no-code").build());
+            Document doc = Jsoup.parse(unescapedString);
+            String[] lines = unescapedString.split("<html>");
 
-        //check html string for regex
-            //check for c:out && escapeXml="true" && !request.getParameter
-        System.out.println(editor);
-        if (editor.contains("c:out") && editor.contains("escapeXml=\"true\"") && editor.contains("value=\"${last_name}\"") && editor.contains("value=\"${first_name}\"")) {
-            System.out.println("true");
-            return trackProgress(success().build());
-        }
-        else if (editor.contains("${fn:escapeXml") && editor.contains("\"param.first_name\"") && editor.contains("\"param.last_name\"")) {
-            System.out.println("true");
-            return trackProgress(success().build());
-        }
-        else {
-            System.out.println("false");
-            return trackProgress(failed().build());
+            String include = (lines[0]);
+            String first_name_element = doc.select("body > table > tbody > tr:nth-child(1) > td:nth-child(2)").first().text();
+            String last_name_element = doc.select("body > table > tbody > tr:nth-child(2) > td:nth-child(2)").first().text();
+
+            Boolean includeCorrect = false;
+            Boolean firstNameCorrect = false;
+            Boolean lastNameCorrect = false;
+
+            if (include.contains("<%@") && include.contains("taglib") && include.contains("uri=\"https://www.owasp.org/index.php/OWASP_Java_Encoder_Project\"") && include.contains("%>")) {
+                includeCorrect = true;
+            }
+            if (first_name_element.equals("${e:forHtml(param.first_name)}")) {
+                firstNameCorrect = true;
+            }
+            if (last_name_element.equals("${e:forHtml(param.last_name)}")) {
+                lastNameCorrect = true;
+            }
+
+            if (includeCorrect && firstNameCorrect && lastNameCorrect) {
+                System.out.println("true");
+                return trackProgress(success().feedback("xss-mitigation-3-success").build());
+            } else {
+                return trackProgress(failed().feedback("xss-mitigation-3-failure").build());
+            }
+        }catch(Exception e) {
+            return trackProgress(failed().output(e.getMessage()).build());
         }
     }
 }
