@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @AssignmentPath("CrossSiteScripting/attack4")
-@AssignmentHints(value = {"xss-mitigation-4-hint1", "xss-mitigation-4-hint2", "xss-mitigation-4-hint3", "xss-mitigation-4-hint4"})
+@AssignmentHints(value = {"xss-mitigation-4-hint1"})
 public class CrossSiteScriptingLesson4 extends AssignmentEndpoint {
 
     @RequestMapping(method = RequestMethod.POST)
