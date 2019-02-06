@@ -23,9 +23,9 @@ public class CrossSiteScriptingLesson4 extends AssignmentEndpoint {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public AttackResult completed(@RequestParam String editor) {
+    public AttackResult completed(@RequestParam String editor2) {
 
-        editor = editor.replaceAll("\\<.*?>","");
+        String editor = editor2.replaceAll("\\<.*?>","");
         System.out.println(editor);
 
         if ((editor.contains("Policy.getInstance(\"antisamy-slashdot.xml\"") || editor.contains(".scan(newComment, \"antisamy-slashdot.xml\"") || editor.contains(".scan(newComment, new File(\"antisamy-slashdot.xml\")")) &&
