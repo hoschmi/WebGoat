@@ -9,6 +9,7 @@ ensure that, before being passed back to the user, any values accepted from the 
 Client-side validation cannot be relied upon, but user input can be forced down to a minimal alphanumeric set with server-side
 processing before being used by a web application in any way.
 
+
 == Escaping
 
 Escaping means that you convert (or mark) key characters of the data to prevent it from being interpreted in a dangerous context.

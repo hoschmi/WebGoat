@@ -19,6 +19,7 @@ public class CrossSiteScriptingLesson3 extends AssignmentEndpoint {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public AttackResult completed(@RequestParam String editor) {
+
         String unescapedString = org.jsoup.parser.Parser.unescapeEntities(editor, true);
         try {
             if (editor.isEmpty()) return trackProgress(failed().feedback("xss-mitigation-3-no-code").build());

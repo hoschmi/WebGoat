@@ -21,7 +21,6 @@ Here is the JSP file:
 [source,html]
 -------------------------------------------------------
 <html>
-
 <head>
     <title>Using GET and POST Method to Read Form Data</title>
 </head>
@@ -43,7 +42,6 @@ Here is the JSP file:
         </tbody>
     </table>
 </body>
-
 </html>
 -------------------------------------------------------
 
