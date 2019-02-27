@@ -65,7 +65,7 @@ public class BlindSendFileAssignmentTest extends LessonTest {
 
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.feedback", CoreMatchers.is(messages.getMessage("assignment.not.solved"))))
-                .andExpect(jsonPath("$.output", CoreMatchers.is("javax.xml.bind.UnmarshalException\\n - with linked exception:\\n[javax.xml.stream.XMLStreamException: ParseError at [row,col]:[1,22]\\nMessage: The element type \\\"text\\\" must be terminated by the matching end-tag \\\"<\\/text>\\\".]")));
+                .andExpect(jsonPath("$.output", CoreMatchers.containsString("javax.xml.bind.UnmarshalException\\n - with linked exception:\\n[javax.xml.stream.XMLStreamException: ParseError at [row,col]:[1,22]")));
     }
 
     @Test
