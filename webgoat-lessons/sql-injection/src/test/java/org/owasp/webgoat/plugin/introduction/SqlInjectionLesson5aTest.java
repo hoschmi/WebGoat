@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -61,20 +62,21 @@ public class SqlInjectionLesson5aTest extends LessonTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack5a")
                 .param("account", "smith' OR '1' = '1"))
 
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("lessonCompleted", is(true)))
-                .andExpect(jsonPath("$.feedback", containsString("You have succeeded")))
-                .andExpect(jsonPath("$.output").doesNotExist());
-    }
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("lessonCompleted", is(true)))
+            .andExpect(jsonPath("$.feedback", containsString("You have succeed")))
+            .andExpect(jsonPath("$.output").exists());
+  }
 
     @Test
     public void sqlInjectionWrongShouldDisplayError() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/SqlInjection/attack5a")
                 .param("account", "smith' OR '1' = '1'"))
 
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("lessonCompleted", is(false)))
-                .andExpect(jsonPath("$.feedback", containsString(messages.getMessage("assignment.not.solved"))))
-                .andExpect(jsonPath("$.output", is("malformed string: '1''")));
-    }
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("lessonCompleted", is(false)))
+            .andExpect(jsonPath("$.feedback", containsString(messages.getMessage("assignment.not.solved"))))
+            .andExpect(jsonPath("$.output", is("malformed string: '1''<br> Your query was: SELECT * FROM user_data WHERE" +
+                    " first_name = 'John' and last_name = 'Smith' OR '1' = '1''")));
+  }
 }
